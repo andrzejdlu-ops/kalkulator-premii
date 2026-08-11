@@ -42,11 +42,11 @@
 
     .card {
       background: #fff; border-radius: 12px; padding: 16px;
-      margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.1);
+      margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.1);
     }
     .section-title {
       font-size: .8rem; font-weight: 600; color: #888;
-      text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px;
+      text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px;
     }
     label { display: block; font-size: .85rem; color: #555; margin-bottom: 4px; }
 
@@ -57,30 +57,27 @@
     }
     input:focus { border-color: #4CAF50; }
 
-    .col-labels { display: flex; gap: 8px; margin-bottom: 6px; padding-right: 40px; }
+    .col-labels { display: flex; gap: .4em; margin-bottom: 4px; padding-right: 2.4em; }
     .col-labels span { font-size: .78rem; color: #888; }
-    .col-labels span:first-child { flex: 2; }
-    .col-labels span:last-child { flex: 1; }
+    .col-labels span:first-child { flex: 2; min-width: 0; }
+    .col-labels span:nth-child(2) { width: 4em; flex-shrink: 0; text-align: center; }
+    .col-labels span:last-child { min-width: 7em; text-align: right; }
 
-    #people-list { display: flex; flex-direction: column; gap: 10px; }
+    #people-list { display: flex; flex-direction: column; }
 
-    .person-card {
-      background: #fafafa; border: 1.5px solid #eee;
-      border-radius: .65em; padding: .65em .75em;
+    .person-row {
+      display: flex; align-items: center; gap: .4em;
+      padding: .3em 0; border-bottom: 1px solid #f0f0f0;
     }
-    .row-inputs { display: flex; gap: .5em; }
-    .row-inputs input[type="text"] { flex: 2; }
-    .row-inputs input[type="number"] { flex: 1; min-width: 4em; }
-
-    .row-result {
-      display: flex; justify-content: space-between;
-      align-items: center; gap: .5em; margin-top: .5em;
-    }
+    .person-row:last-child { border-bottom: none; }
+    .person-row .name-input { flex: 2; min-width: 0; }
+    .person-row .abs-input { width: 4em; flex-shrink: 0; }
     .result-badge {
       background: #e8f5e9; color: #2e7d32; font-weight: 700;
       font-size: .95rem; padding: .35em .85em; border-radius: 2em;
       min-width: 7em; text-align: right; white-space: nowrap;
     }
+    .result-badge:empty { background: transparent; color: transparent; }
     .btn-remove {
       background: #ffebee; color: #c62828; border: none; border-radius: 50%;
       width: 2em; height: 2em; font-size: 1rem; cursor: pointer;
@@ -113,7 +110,7 @@
     .total-card {
       background: #4CAF50; color: #fff; border-radius: 12px; padding: 16px;
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
     .total-card span:first-child { font-size: .95rem; opacity: .9; }
     .total-card span:last-child { font-size: 1.4rem; font-weight: 700; }
@@ -206,22 +203,42 @@
       border: none; border-radius: 8px; font-size: .85rem; font-weight: 600; cursor: pointer;
     }
 
-    @media (min-width: 500px) { body { max-width: 480px; margin: 0 auto; } }
+    .top-bar { margin-bottom: 12px; }
+    .top-bar .app-header { margin-bottom: 0; }
+    .top-bar .size-bar { margin-bottom: 0; }
+    .calc-grid { display: flex; flex-direction: column; }
+
+    @media (min-width: 700px) {
+      body { max-width: 980px; margin: 0 auto; padding: 12px 20px 20px; }
+      .top-bar { display: flex; align-items: center; gap: 12px; }
+      .top-bar .app-header { flex: 1; }
+      .calc-grid {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        grid-template-areas: "left right" "bottom bottom";
+        gap: 12px;
+        align-items: start;
+      }
+      .calc-left { grid-area: left; }
+      .calc-right { grid-area: right; }
+      .calc-bottom { grid-area: bottom; }
+    }
   </style>
 </head>
 <body>
 
-<div class="app-header">
-  <a class="btn-back" href="https://andrzejdlu-ops.github.io/">← Menu</a>
-  <span class="app-title">Kalkulator Premii</span>
-</div>
-
-<div class="size-bar">
-  <span>A</span>
-  <input type="range" id="font-slider" min="12" max="22" step="1" value="16"
-         oninput="setFontSize(this.value)">
-  <span style="font-size:1.1rem">A</span>
-  <span class="size-label" id="font-label">16px</span>
+<div class="top-bar">
+  <div class="app-header">
+    <a class="btn-back" href="https://andrzejdlu-ops.github.io/">← Menu</a>
+    <span class="app-title">Kalkulator Premii</span>
+  </div>
+  <div class="size-bar">
+    <span>A</span>
+    <input type="range" id="font-slider" min="12" max="22" step="1" value="16"
+           oninput="setFontSize(this.value)">
+    <span style="font-size:1.1rem">A</span>
+    <span class="size-label" id="font-label">16px</span>
+  </div>
 </div>
 
 <div class="tabs">
@@ -231,36 +248,43 @@
 
 <!-- KALKULATOR -->
 <div id="screen-calc" class="screen active">
-  <div class="card">
-    <label>Miesiąc</label>
-    <input type="month" id="data-obliczenia">
-  </div>
-  <div class="card">
-    <label>Kwota premii (pula)</label>
-    <input type="number" id="kwota" value="0" min="0" step="0.01" placeholder="np. 5000">
-  </div>
-  <div class="card">
-    <label>Dni robocze w miesiącu</label>
-    <input type="number" id="dni" value="22" min="1" max="31">
-  </div>
-  <div class="card">
-    <div class="section-title">Pracownicy</div>
-    <div class="col-labels">
-      <span>Imię / Nazwisko</span>
-      <span>Nieobecności</span>
+  <div class="calc-grid">
+    <div class="calc-left">
+      <div class="card">
+        <label>Miesiąc</label>
+        <input type="month" id="data-obliczenia">
+      </div>
+      <div class="card">
+        <label>Kwota premii (pula)</label>
+        <input type="number" id="kwota" value="0" min="0" step="0.01" placeholder="np. 5000">
+      </div>
+      <div class="card">
+        <label>Dni robocze w miesiącu</label>
+        <input type="number" id="dni" value="22" min="1" max="31">
+      </div>
     </div>
-    <div id="people-list"></div>
-    <button class="btn-add" onclick="addPerson()">+ Dodaj osobę</button>
-  </div>
-
-  <div id="total-card" class="total-card" style="display:none;">
-    <span>Łącznie wypłacono</span>
-    <span id="total-val">0,00 zł</span>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn-calc" onclick="calculate()">Oblicz</button>
-    <button class="btn-save visible" id="btn-save" onclick="saveResult()" style="display:none;">Zapisz</button>
+    <div class="calc-right">
+      <div class="card">
+        <div class="section-title">Pracownicy</div>
+        <div class="col-labels">
+          <span>Imię / Nazwisko</span>
+          <span>Nieob.</span>
+          <span>Premia</span>
+        </div>
+        <div id="people-list"></div>
+        <button class="btn-add" onclick="addPerson()">+ Dodaj osobę</button>
+      </div>
+    </div>
+    <div class="calc-bottom">
+      <div id="total-card" class="total-card" style="display:none;">
+        <span>Łącznie wypłacono</span>
+        <span id="total-val">0,00 zł</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn-calc" onclick="calculate()">Oblicz</button>
+        <button class="btn-save" id="btn-save" onclick="saveResult()" style="display:none;">Zapisz</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -325,23 +349,18 @@
   function addPerson(name = '', absVal = 0, resultText = '') {
     const list = document.getElementById('people-list');
     const div = document.createElement('div');
-    div.className = 'person-card';
+    div.className = 'person-row';
     div.innerHTML = `
-      <div class="row-inputs">
-        <input type="text" placeholder="Imię" value="${name}" class="name-input">
-        <input type="number" placeholder="0" value="${absVal}" min="0" class="abs-input">
-        <button class="btn-remove" onclick="removePerson(this)">✕</button>
-      </div>
-      <div class="row-result" style="display:${resultText ? 'flex' : 'none'}">
-        <span style="font-size:.85rem;color:#555;">Premia:</span>
-        <span class="result-badge">${resultText}</span>
-      </div>`;
+      <input type="text" placeholder="Imię" value="${name}" class="name-input">
+      <input type="number" placeholder="0" value="${absVal}" min="0" class="abs-input">
+      <span class="result-badge">${resultText}</span>
+      <button class="btn-remove" onclick="removePerson(this)">✕</button>`;
     list.appendChild(div);
   }
 
   function removePerson(btn) {
-    btn.closest('.person-card').remove();
-    if (document.querySelector('.result-badge')) calculate();
+    btn.closest('.person-row').remove();
+    if (document.querySelector('.result-badge:not(:empty)')) calculate();
   }
 
   // ---- calculate ----
@@ -350,7 +369,7 @@
     const dni   = parseInt(document.getElementById('dni').value) || 0;
     if (dni <= 0) { alert('Podaj liczbę dni roboczych.'); return; }
 
-    const cards = [...document.querySelectorAll('.person-card')];
+    const cards = [...document.querySelectorAll('.person-row')];
     if (!cards.length) { alert('Dodaj co najmniej jedną osobę.'); return; }
 
     const absences = cards.map(c => Math.max(0, parseInt(c.querySelector('.abs-input').value) || 0));
@@ -365,7 +384,6 @@
       const bonus = Math.max(0, own + gain);
       const imie = card.querySelector('.name-input').value || ('Osoba ' + (i + 1));
       card.querySelector('.result-badge').textContent = fmt(bonus);
-      card.querySelector('.row-result').style.display = 'flex';
       wyniki.push({ imie, nieobecnosci: absences[i], premia: Math.round(bonus * 100) / 100 });
     });
 
