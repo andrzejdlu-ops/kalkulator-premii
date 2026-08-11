@@ -337,11 +337,13 @@
   // ---- save to Firestore ----
   async function saveResult() {
     if (!lastResult) return;
+    if (!lastResult.data) { toast('Wybierz miesiąc przed zapisem.'); return; }
     const btn = document.getElementById('btn-save');
     btn.disabled = true;
     btn.textContent = 'Zapisywanie...';
     try {
-      await db.collection(COL).add(lastResult);
+      // ID dokumentu = miesiąc (np. "2026-08") — nadpisuje jeśli istnieje
+      await db.collection(COL).doc(lastResult.data).set(lastResult);
       toast('Zapisano w chmurze ✓');
       btn.style.display = 'none';
       lastResult = null;
@@ -358,7 +360,7 @@
     const container = document.getElementById('history-list');
     container.innerHTML = '<div class="history-loading">Ładowanie z chmury...</div>';
     try {
-      const snap = await db.collection(COL).orderBy('timestamp', 'desc').get();
+      const snap = await db.collection(COL).orderBy('data', 'desc').get();
       if (snap.empty) {
         container.innerHTML = '<div class="history-empty">Brak zapisanych obliczeń.<br>Wróć do kalkulatora i kliknij <b>Zapisz</b>.</div>';
         return;
