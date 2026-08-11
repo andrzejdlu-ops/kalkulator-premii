@@ -16,7 +16,6 @@
       padding: 16px 16px 40px;
     }
 
-    /* ---- nav tabs ---- */
     .tabs {
       display: flex;
       background: #fff;
@@ -26,62 +25,33 @@
       box-shadow: 0 1px 4px rgba(0,0,0,.1);
     }
     .tab {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      border-radius: 9px;
-      font-size: .9rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #888;
-      transition: background .2s, color .2s;
-      border: none;
-      background: none;
+      flex: 1; padding: 10px; text-align: center; border-radius: 9px;
+      font-size: .9rem; font-weight: 600; cursor: pointer; color: #888;
+      transition: background .2s, color .2s; border: none; background: none;
     }
     .tab.active { background: #4CAF50; color: #fff; }
 
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* ---- cards ---- */
     .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,.1);
+      background: #fff; border-radius: 12px; padding: 16px;
+      margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.1);
     }
-
     .section-title {
-      font-size: .8rem;
-      font-weight: 600;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      margin-bottom: 12px;
+      font-size: .8rem; font-weight: 600; color: #888;
+      text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px;
     }
-
     label { display: block; font-size: .85rem; color: #555; margin-bottom: 4px; }
 
     input[type="number"], input[type="text"], input[type="month"] {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color .2s;
-      background: #fff;
+      width: 100%; padding: 10px 12px; border: 1.5px solid #ddd;
+      border-radius: 8px; font-size: 1rem; outline: none;
+      transition: border-color .2s; background: #fff;
     }
     input:focus { border-color: #4CAF50; }
 
-    /* ---- person rows ---- */
-    .col-labels {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 6px;
-      padding-right: 40px;
-    }
+    .col-labels { display: flex; gap: 8px; margin-bottom: 6px; padding-right: 40px; }
     .col-labels span { font-size: .78rem; color: #888; }
     .col-labels span:first-child { flex: 2; }
     .col-labels span:last-child { flex: 1; }
@@ -89,149 +59,80 @@
     #people-list { display: flex; flex-direction: column; gap: 10px; }
 
     .person-card {
-      background: #fafafa;
-      border: 1.5px solid #eee;
-      border-radius: 10px;
-      padding: 10px 12px;
+      background: #fafafa; border: 1.5px solid #eee;
+      border-radius: 10px; padding: 10px 12px;
     }
-    .row-inputs { display: flex; gap: 8px; margin-bottom: 0; }
+    .row-inputs { display: flex; gap: 8px; }
     .row-inputs input[type="text"] { flex: 2; }
     .row-inputs input[type="number"] { flex: 1; min-width: 70px; }
 
     .row-result {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 8px; margin-top: 8px;
     }
     .result-badge {
-      background: #e8f5e9;
-      color: #2e7d32;
-      font-weight: 700;
-      font-size: .95rem;
-      padding: 6px 14px;
-      border-radius: 20px;
-      min-width: 120px;
-      text-align: right;
-      white-space: nowrap;
+      background: #e8f5e9; color: #2e7d32; font-weight: 700;
+      font-size: .95rem; padding: 6px 14px; border-radius: 20px;
+      min-width: 120px; text-align: right; white-space: nowrap;
     }
-
     .btn-remove {
-      background: #ffebee;
-      color: #c62828;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #ffebee; color: #c62828; border: none; border-radius: 50%;
+      width: 32px; height: 32px; font-size: 1rem; cursor: pointer;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     }
-
     .btn-add {
-      width: 100%;
-      padding: 12px;
-      background: #fff;
-      border: 2px dashed #bbb;
-      border-radius: 10px;
-      font-size: .95rem;
-      color: #777;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: border-color .2s, color .2s;
+      width: 100%; padding: 12px; background: #fff; border: 2px dashed #bbb;
+      border-radius: 10px; font-size: .95rem; color: #777; cursor: pointer;
+      margin-top: 8px; transition: border-color .2s, color .2s;
     }
     .btn-add:hover { border-color: #4CAF50; color: #4CAF50; }
 
-    /* ---- action buttons ---- */
     .btn-row { display: flex; gap: 10px; }
-
     .btn-calc {
-      flex: 1;
-      padding: 16px;
-      background: #4CAF50;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
+      flex: 1; padding: 16px; background: #4CAF50; color: #fff; border: none;
+      border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer;
       transition: background .2s;
     }
     .btn-calc:hover { background: #388e3c; }
 
     .btn-save {
-      flex: 1;
-      padding: 16px;
-      background: #1976D2;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .2s;
-      display: none;
+      flex: 1; padding: 16px; background: #1976D2; color: #fff; border: none;
+      border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+      transition: background .2s; display: none;
     }
     .btn-save.visible { display: block; }
     .btn-save:hover { background: #1565C0; }
+    .btn-save:disabled { background: #90a4ae; cursor: default; }
 
-    /* ---- total ---- */
     .total-card {
-      background: #4CAF50;
-      color: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #4CAF50; color: #fff; border-radius: 12px; padding: 16px;
+      display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 14px;
     }
     .total-card span:first-child { font-size: .95rem; opacity: .9; }
     .total-card span:last-child { font-size: 1.4rem; font-weight: 700; }
 
-    /* ---- toast ---- */
+    /* toast */
     .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
+      position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(80px);
-      background: #333;
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 24px;
-      font-size: .9rem;
-      transition: transform .3s;
-      z-index: 999;
-      white-space: nowrap;
+      background: #333; color: #fff; padding: 12px 24px;
+      border-radius: 24px; font-size: .9rem; transition: transform .3s;
+      z-index: 999; white-space: nowrap;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* ---- historia ---- */
-    .history-empty {
-      text-align: center;
-      color: #aaa;
-      padding: 40px 0;
-      font-size: .95rem;
-    }
+    /* historia */
+    .history-empty { text-align: center; color: #aaa; padding: 40px 0; font-size: .95rem; }
+    .history-loading { text-align: center; color: #aaa; padding: 40px 0; font-size: .95rem; }
 
     .history-item {
-      background: #fff;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,.1);
-      overflow: hidden;
+      background: #fff; border-radius: 12px; margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.1); overflow: hidden;
     }
     .history-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      cursor: pointer;
-      user-select: none;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 16px; cursor: pointer; user-select: none;
     }
     .history-header:hover { background: #f9f9f9; }
     .history-meta { display: flex; flex-direction: column; gap: 2px; }
@@ -244,90 +145,56 @@
     .history-item.open .history-body { display: block; }
 
     .history-info {
-      display: flex;
-      gap: 16px;
-      padding: 10px 16px;
-      background: #f9f9f9;
-      font-size: .82rem;
-      color: #666;
+      display: flex; gap: 16px; padding: 10px 16px;
+      background: #f9f9f9; font-size: .82rem; color: #666;
     }
-
     .history-table { width: 100%; border-collapse: collapse; }
     .history-table th {
-      text-align: left;
-      padding: 8px 16px;
-      font-size: .78rem;
-      color: #888;
-      font-weight: 600;
-      border-bottom: 1px solid #f0f0f0;
+      text-align: left; padding: 8px 16px; font-size: .78rem;
+      color: #888; font-weight: 600; border-bottom: 1px solid #f0f0f0;
     }
     .history-table td {
-      padding: 9px 16px;
-      font-size: .9rem;
-      border-bottom: 1px solid #f5f5f5;
+      padding: 9px 16px; font-size: .9rem; border-bottom: 1px solid #f5f5f5;
     }
     .history-table td:last-child { text-align: right; font-weight: 600; color: #2e7d32; }
     .history-table tr:last-child td { border-bottom: none; }
 
     .history-actions {
-      display: flex;
-      gap: 8px;
-      padding: 10px 16px;
-      border-top: 1px solid #f0f0f0;
+      display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid #f0f0f0;
     }
     .btn-load {
-      flex: 1;
-      padding: 9px;
-      background: #e3f2fd;
-      color: #1565C0;
-      border: none;
-      border-radius: 8px;
-      font-size: .85rem;
-      font-weight: 600;
-      cursor: pointer;
+      flex: 1; padding: 9px; background: #e3f2fd; color: #1565C0;
+      border: none; border-radius: 8px; font-size: .85rem; font-weight: 600; cursor: pointer;
     }
     .btn-delete {
-      padding: 9px 16px;
-      background: #ffebee;
-      color: #c62828;
-      border: none;
-      border-radius: 8px;
-      font-size: .85rem;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 9px 16px; background: #ffebee; color: #c62828;
+      border: none; border-radius: 8px; font-size: .85rem; font-weight: 600; cursor: pointer;
     }
 
-    @media (min-width: 500px) {
-      body { max-width: 480px; margin: 0 auto; }
-    }
+    @media (min-width: 500px) { body { max-width: 480px; margin: 0 auto; } }
   </style>
 </head>
 <body>
 
-<!-- nav -->
 <div class="tabs">
-  <button class="tab active" onclick="showScreen('calc')">Kalkulator</button>
-  <button class="tab" onclick="showScreen('history')">Historia</button>
+  <button class="tab active" id="tab-calc" onclick="showScreen('calc')">Kalkulator</button>
+  <button class="tab" id="tab-history" onclick="showScreen('history')">Historia</button>
 </div>
 
-<!-- ========== KALKULATOR ========== -->
+<!-- KALKULATOR -->
 <div id="screen-calc" class="screen active">
-
   <div class="card">
-    <label>Miesiąc / Data obliczenia</label>
+    <label>Miesiąc</label>
     <input type="month" id="data-obliczenia">
   </div>
-
   <div class="card">
     <label>Kwota premii (pula)</label>
     <input type="number" id="kwota" value="0" min="0" step="0.01" placeholder="np. 5000">
   </div>
-
   <div class="card">
     <label>Dni robocze w miesiącu</label>
-    <input type="number" id="dni" value="22" min="1" max="31" placeholder="np. 22">
+    <input type="number" id="dni" value="22" min="1" max="31">
   </div>
-
   <div class="card">
     <div class="section-title">Pracownicy</div>
     <div class="col-labels">
@@ -345,33 +212,46 @@
 
   <div class="btn-row">
     <button class="btn-calc" onclick="calculate()">Oblicz</button>
-    <button class="btn-save" id="btn-save" onclick="saveResult()">Zapisz</button>
+    <button class="btn-save visible" id="btn-save" onclick="saveResult()" style="display:none;">Zapisz</button>
   </div>
-
 </div>
 
-<!-- ========== HISTORIA ========== -->
+<!-- HISTORIA -->
 <div id="screen-history" class="screen">
-  <div id="history-list"></div>
+  <div id="history-list"><div class="history-loading">Ładowanie...</div></div>
 </div>
 
-<!-- toast -->
 <div class="toast" id="toast"></div>
 
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
 <script>
+  // ---- Firebase init ----
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOvcYscDDg4BI9cbzpiXL4xJDnemusoGI",
+    authDomain: "kalkulator-premii-b13ff.firebaseapp.com",
+    projectId: "kalkulator-premii-b13ff",
+    storageBucket: "kalkulator-premii-b13ff.firebasestorage.app",
+    messagingSenderId: "566707019483",
+    appId: "1:566707019483:web:c04eb219eda3011ab9b6fe"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const COL = 'obliczenia';
+
   const DEFAULT = [
     "Izabela","Monika U.","Julia","Joanna",
     "Paulina","Monika Ż.","Monika K.","Wiktoria"
   ];
 
-  const DB_KEY = 'premie_historia';
   let lastResult = null;
 
-  // ---- utils ----
+  // ---- helpers ----
   function fmt(n) {
     return n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
   }
-
   function fmtMonth(ym) {
     if (!ym) return '—';
     const [y, m] = ym.split('-');
@@ -379,19 +259,17 @@
                    'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
     return names[parseInt(m) - 1] + ' ' + y;
   }
-
   function toast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
-
   function showScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById('screen-' + name).classList.add('active');
-    event.target.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
     if (name === 'history') renderHistory();
   }
 
@@ -438,85 +316,91 @@
       const gain = n > 1 ? dailyPerPerson * (totalAbsences - absences[i]) / (n - 1) : 0;
       const bonus = Math.max(0, own + gain);
       const imie = card.querySelector('.name-input').value || ('Osoba ' + (i + 1));
-
-      const row = card.querySelector('.row-result');
       card.querySelector('.result-badge').textContent = fmt(bonus);
-      row.style.display = 'flex';
-
-      wyniki.push({ imie, nieobecnosci: absences[i], premia: bonus });
+      card.querySelector('.row-result').style.display = 'flex';
+      wyniki.push({ imie, nieobecnosci: absences[i], premia: Math.round(bonus * 100) / 100 });
     });
 
     document.getElementById('total-val').textContent = fmt(kwota);
     document.getElementById('total-card').style.display = 'flex';
-    document.getElementById('btn-save').classList.add('visible');
+    document.getElementById('btn-save').style.display = 'block';
 
     lastResult = {
-      id: Date.now(),
       data: document.getElementById('data-obliczenia').value,
       kwota,
       dni,
-      wyniki
+      wyniki,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
   }
 
-  // ---- save ----
-  function saveResult() {
+  // ---- save to Firestore ----
+  async function saveResult() {
     if (!lastResult) return;
-    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
-    db.unshift(lastResult);
-    localStorage.setItem(DB_KEY, JSON.stringify(db));
-    toast('Zapisano obliczenie ✓');
-    document.getElementById('btn-save').classList.remove('visible');
-    lastResult = null;
+    const btn = document.getElementById('btn-save');
+    btn.disabled = true;
+    btn.textContent = 'Zapisywanie...';
+    try {
+      await db.collection(COL).add(lastResult);
+      toast('Zapisano w chmurze ✓');
+      btn.style.display = 'none';
+      lastResult = null;
+    } catch (e) {
+      toast('Błąd zapisu: ' + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Zapisz';
+    }
   }
 
-  // ---- history ----
-  function renderHistory() {
-    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+  // ---- history from Firestore ----
+  async function renderHistory() {
     const container = document.getElementById('history-list');
+    container.innerHTML = '<div class="history-loading">Ładowanie z chmury...</div>';
+    try {
+      const snap = await db.collection(COL).orderBy('timestamp', 'desc').get();
+      if (snap.empty) {
+        container.innerHTML = '<div class="history-empty">Brak zapisanych obliczeń.<br>Wróć do kalkulatora i kliknij <b>Zapisz</b>.</div>';
+        return;
+      }
+      const entries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      container.innerHTML = entries.map((entry, idx) => `
+        <div class="history-item" id="hi-${idx}">
+          <div class="history-header" onclick="toggleHistory(${idx})">
+            <div class="history-meta">
+              <span class="history-date">${fmtMonth(entry.data) || 'Bez daty'}</span>
+              <span class="history-sum">Pula: ${fmt(entry.kwota)}</span>
+            </div>
+            <span class="history-arrow">▶</span>
+          </div>
+          <div class="history-body">
+            <div class="history-info">
+              <span>Dni robocze: <b>${entry.dni}</b></span>
+              <span>Pracownicy: <b>${entry.wyniki.length}</b></span>
+            </div>
+            <table class="history-table">
+              <thead><tr><th>Imię</th><th>Nieob.</th><th>Premia</th></tr></thead>
+              <tbody>
+                ${entry.wyniki.map(w => `
+                  <tr>
+                    <td>${w.imie}</td>
+                    <td>${w.nieobecnosci}</td>
+                    <td>${fmt(w.premia)}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+            <div class="history-actions">
+              <button class="btn-load" onclick="loadEntry(${idx})">Wczytaj do kalkulatora</button>
+              <button class="btn-delete" onclick="deleteEntry('${entry.id}', ${idx})">Usuń</button>
+            </div>
+          </div>
+        </div>`).join('');
 
-    if (!db.length) {
-      container.innerHTML = '<div class="history-empty">Brak zapisanych obliczeń.<br>Wróć do kalkulatora i kliknij <b>Zapisz</b>.</div>';
-      return;
+      // store entries for loadEntry
+      window._historyEntries = entries;
+    } catch (e) {
+      container.innerHTML = `<div class="history-empty">Błąd ładowania: ${e.message}</div>`;
     }
-
-    container.innerHTML = db.map((entry, idx) => `
-      <div class="history-item" id="hi-${idx}">
-        <div class="history-header" onclick="toggleHistory(${idx})">
-          <div class="history-meta">
-            <span class="history-date">${fmtMonth(entry.data) || 'Bez daty'}</span>
-            <span class="history-sum">Pula: ${fmt(entry.kwota)}</span>
-          </div>
-          <span class="history-arrow">▶</span>
-        </div>
-        <div class="history-body">
-          <div class="history-info">
-            <span>Dni robocze: <b>${entry.dni}</b></span>
-            <span>Pracownicy: <b>${entry.wyniki.length}</b></span>
-          </div>
-          <table class="history-table">
-            <thead>
-              <tr>
-                <th>Imię</th>
-                <th>Nieob.</th>
-                <th>Premia</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${entry.wyniki.map(w => `
-                <tr>
-                  <td>${w.imie}</td>
-                  <td>${w.nieobecnosci}</td>
-                  <td>${fmt(w.premia)}</td>
-                </tr>`).join('')}
-            </tbody>
-          </table>
-          <div class="history-actions">
-            <button class="btn-load" onclick="loadEntry(${idx})">Wczytaj do kalkulatora</button>
-            <button class="btn-delete" onclick="deleteEntry(${idx})">Usuń</button>
-          </div>
-        </div>
-      </div>`).join('');
   }
 
   function toggleHistory(idx) {
@@ -524,43 +408,35 @@
   }
 
   function loadEntry(idx) {
-    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
-    const entry = db[idx];
-
+    const entry = window._historyEntries[idx];
     document.getElementById('kwota').value = entry.kwota;
     document.getElementById('dni').value = entry.dni;
     document.getElementById('data-obliczenia').value = entry.data || '';
     document.getElementById('people-list').innerHTML = '';
     entry.wyniki.forEach(w => addPerson(w.imie, w.nieobecnosci));
-
-    // przejdź do kalkulatora
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('screen-calc').classList.add('active');
-    document.querySelector('.tab').classList.add('active');
-
     document.getElementById('total-card').style.display = 'none';
-    document.getElementById('btn-save').classList.remove('visible');
+    document.getElementById('btn-save').style.display = 'none';
     lastResult = null;
+    showScreen('calc');
     toast('Wczytano obliczenie ✓');
   }
 
-  function deleteEntry(idx) {
+  async function deleteEntry(firestoreId, idx) {
     if (!confirm('Usunąć to obliczenie?')) return;
-    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
-    db.splice(idx, 1);
-    localStorage.setItem(DB_KEY, JSON.stringify(db));
-    renderHistory();
-    toast('Usunięto ✓');
+    try {
+      await db.collection(COL).doc(firestoreId).delete();
+      toast('Usunięto ✓');
+      renderHistory();
+    } catch (e) {
+      toast('Błąd usuwania: ' + e.message);
+    }
   }
 
   // ---- init ----
   (function init() {
-    // ustaw bieżący miesiąc
     const now = new Date();
     const ym = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
     document.getElementById('data-obliczenia').value = ym;
-
     DEFAULT.forEach(n => addPerson(n));
   })();
 </script>
