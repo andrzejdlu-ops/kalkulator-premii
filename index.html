@@ -13,16 +13,37 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       background: #f0f0f0;
       min-height: 100dvh;
-      padding: 16px;
+      padding: 16px 16px 40px;
     }
 
-    h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #222;
+    /* ---- nav tabs ---- */
+    .tabs {
+      display: flex;
+      background: #fff;
+      border-radius: 12px;
+      padding: 4px;
       margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.1);
     }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 9px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #888;
+      transition: background .2s, color .2s;
+      border: none;
+      background: none;
+    }
+    .tab.active { background: #4CAF50; color: #fff; }
 
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ---- cards ---- */
     .card {
       background: #fff;
       border-radius: 12px;
@@ -31,14 +52,18 @@
       box-shadow: 0 1px 4px rgba(0,0,0,.1);
     }
 
-    label {
-      display: block;
-      font-size: .85rem;
-      color: #555;
-      margin-bottom: 4px;
+    .section-title {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 12px;
     }
 
-    input[type="number"], input[type="text"] {
+    label { display: block; font-size: .85rem; color: #555; margin-bottom: 4px; }
+
+    input[type="number"], input[type="text"], input[type="month"] {
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid #ddd;
@@ -46,10 +71,30 @@
       font-size: 1rem;
       outline: none;
       transition: border-color .2s;
+      background: #fff;
     }
     input:focus { border-color: #4CAF50; }
 
-    .row-inputs { display: flex; gap: 8px; margin-bottom: 8px; }
+    /* ---- person rows ---- */
+    .col-labels {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+      padding-right: 40px;
+    }
+    .col-labels span { font-size: .78rem; color: #888; }
+    .col-labels span:first-child { flex: 2; }
+    .col-labels span:last-child { flex: 1; }
+
+    #people-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .person-card {
+      background: #fafafa;
+      border: 1.5px solid #eee;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .row-inputs { display: flex; gap: 8px; margin-bottom: 0; }
     .row-inputs input[type="text"] { flex: 2; }
     .row-inputs input[type="number"] { flex: 1; min-width: 70px; }
 
@@ -58,8 +103,8 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      margin-top: 8px;
     }
-
     .result-badge {
       background: #e8f5e9;
       color: #2e7d32;
@@ -87,34 +132,6 @@
       justify-content: center;
     }
 
-    .section-title {
-      font-size: .8rem;
-      font-weight: 600;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      margin-bottom: 12px;
-    }
-
-    .col-labels {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 6px;
-      padding-right: 40px;
-    }
-    .col-labels span { font-size: .78rem; color: #888; }
-    .col-labels span:first-child { flex: 2; }
-    .col-labels span:last-child { flex: 1; }
-
-    #people-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .person-card {
-      background: #fafafa;
-      border: 1.5px solid #eee;
-      border-radius: 10px;
-      padding: 10px 12px;
-    }
-
     .btn-add {
       width: 100%;
       padding: 12px;
@@ -129,22 +146,40 @@
     }
     .btn-add:hover { border-color: #4CAF50; color: #4CAF50; }
 
+    /* ---- action buttons ---- */
+    .btn-row { display: flex; gap: 10px; }
+
     .btn-calc {
-      width: 100%;
+      flex: 1;
       padding: 16px;
       background: #4CAF50;
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
-      letter-spacing: .03em;
       transition: background .2s;
     }
     .btn-calc:hover { background: #388e3c; }
-    .btn-calc:active { background: #2e7d32; }
 
+    .btn-save {
+      flex: 1;
+      padding: 16px;
+      background: #1976D2;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+      display: none;
+    }
+    .btn-save.visible { display: block; }
+    .btn-save:hover { background: #1565C0; }
+
+    /* ---- total ---- */
     .total-card {
       background: #4CAF50;
       color: #fff;
@@ -153,9 +188,114 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 14px;
     }
     .total-card span:first-child { font-size: .95rem; opacity: .9; }
     .total-card span:last-child { font-size: 1.4rem; font-weight: 700; }
+
+    /* ---- toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #333;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: .9rem;
+      transition: transform .3s;
+      z-index: 999;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ---- historia ---- */
+    .history-empty {
+      text-align: center;
+      color: #aaa;
+      padding: 40px 0;
+      font-size: .95rem;
+    }
+
+    .history-item {
+      background: #fff;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.1);
+      overflow: hidden;
+    }
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .history-header:hover { background: #f9f9f9; }
+    .history-meta { display: flex; flex-direction: column; gap: 2px; }
+    .history-date { font-weight: 700; font-size: 1rem; color: #222; }
+    .history-sum { font-size: .82rem; color: #4CAF50; font-weight: 600; }
+    .history-arrow { color: #aaa; font-size: 1.1rem; transition: transform .2s; }
+    .history-item.open .history-arrow { transform: rotate(90deg); }
+
+    .history-body { display: none; border-top: 1px solid #f0f0f0; }
+    .history-item.open .history-body { display: block; }
+
+    .history-info {
+      display: flex;
+      gap: 16px;
+      padding: 10px 16px;
+      background: #f9f9f9;
+      font-size: .82rem;
+      color: #666;
+    }
+
+    .history-table { width: 100%; border-collapse: collapse; }
+    .history-table th {
+      text-align: left;
+      padding: 8px 16px;
+      font-size: .78rem;
+      color: #888;
+      font-weight: 600;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .history-table td {
+      padding: 9px 16px;
+      font-size: .9rem;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .history-table td:last-child { text-align: right; font-weight: 600; color: #2e7d32; }
+    .history-table tr:last-child td { border-bottom: none; }
+
+    .history-actions {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .btn-load {
+      flex: 1;
+      padding: 9px;
+      background: #e3f2fd;
+      color: #1565C0;
+      border: none;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-delete {
+      padding: 9px 16px;
+      background: #ffebee;
+      color: #c62828;
+      border: none;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
     @media (min-width: 500px) {
       body { max-width: 480px; margin: 0 auto; }
@@ -164,36 +304,59 @@
 </head>
 <body>
 
-<h1>Kalkulator Premii</h1>
-
-<div class="card">
-  <label>Kwota premii (pula)</label>
-  <input type="number" id="kwota" value="0" min="0" step="0.01" placeholder="np. 5000">
+<!-- nav -->
+<div class="tabs">
+  <button class="tab active" onclick="showScreen('calc')">Kalkulator</button>
+  <button class="tab" onclick="showScreen('history')">Historia</button>
 </div>
 
-<div class="card">
-  <label>Dni robocze w miesiącu</label>
-  <input type="number" id="dni" value="22" min="1" max="31" placeholder="np. 22">
-</div>
+<!-- ========== KALKULATOR ========== -->
+<div id="screen-calc" class="screen active">
 
-<div class="card">
-  <div class="section-title">Pracownicy</div>
-  <div class="col-labels">
-    <span>Imię / Nazwisko</span>
-    <span>Nieobecności</span>
+  <div class="card">
+    <label>Miesiąc / Data obliczenia</label>
+    <input type="month" id="data-obliczenia">
   </div>
-  <div id="people-list"></div>
-  <button class="btn-add" onclick="addPerson()">+ Dodaj osobę</button>
-</div>
 
-<button class="btn-calc" onclick="calculate()">Oblicz</button>
+  <div class="card">
+    <label>Kwota premii (pula)</label>
+    <input type="number" id="kwota" value="0" min="0" step="0.01" placeholder="np. 5000">
+  </div>
 
-<div class="card" id="total-card" style="display:none; margin-top:14px;">
-  <div class="total-card">
+  <div class="card">
+    <label>Dni robocze w miesiącu</label>
+    <input type="number" id="dni" value="22" min="1" max="31" placeholder="np. 22">
+  </div>
+
+  <div class="card">
+    <div class="section-title">Pracownicy</div>
+    <div class="col-labels">
+      <span>Imię / Nazwisko</span>
+      <span>Nieobecności</span>
+    </div>
+    <div id="people-list"></div>
+    <button class="btn-add" onclick="addPerson()">+ Dodaj osobę</button>
+  </div>
+
+  <div id="total-card" class="total-card" style="display:none;">
     <span>Łącznie wypłacono</span>
     <span id="total-val">0,00 zł</span>
   </div>
+
+  <div class="btn-row">
+    <button class="btn-calc" onclick="calculate()">Oblicz</button>
+    <button class="btn-save" id="btn-save" onclick="saveResult()">Zapisz</button>
+  </div>
+
 </div>
+
+<!-- ========== HISTORIA ========== -->
+<div id="screen-history" class="screen">
+  <div id="history-list"></div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast"></div>
 
 <script>
   const DEFAULT = [
@@ -201,22 +364,47 @@
     "Paulina","Monika Ż.","Monika K.","Wiktoria"
   ];
 
+  const DB_KEY = 'premie_historia';
+  let lastResult = null;
+
+  // ---- utils ----
   function fmt(n) {
     return n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
   }
 
-  function addPerson(name = '', resultText = '') {
-    const list = document.getElementById('people-list');
-    const id = Date.now() + Math.random();
+  function fmtMonth(ym) {
+    if (!ym) return '—';
+    const [y, m] = ym.split('-');
+    const names = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
+                   'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+    return names[parseInt(m) - 1] + ' ' + y;
+  }
 
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    event.target.classList.add('active');
+    if (name === 'history') renderHistory();
+  }
+
+  // ---- people ----
+  function addPerson(name = '', absVal = 0, resultText = '') {
+    const list = document.getElementById('people-list');
     const div = document.createElement('div');
     div.className = 'person-card';
-    div.dataset.id = id;
     div.innerHTML = `
       <div class="row-inputs">
         <input type="text" placeholder="Imię" value="${name}" class="name-input">
-        <input type="number" placeholder="0" value="0" min="0" class="abs-input">
-        <button class="btn-remove" onclick="removePerson(this)" title="Usuń">✕</button>
+        <input type="number" placeholder="0" value="${absVal}" min="0" class="abs-input">
+        <button class="btn-remove" onclick="removePerson(this)">✕</button>
       </div>
       <div class="row-result" style="display:${resultText ? 'flex' : 'none'}">
         <span style="font-size:.85rem;color:#555;">Premia:</span>
@@ -227,47 +415,154 @@
 
   function removePerson(btn) {
     btn.closest('.person-card').remove();
-    recalcIfDone();
+    if (document.querySelector('.result-badge')) calculate();
   }
 
-  function recalcIfDone() {
-    const anyResult = document.querySelector('.result-badge');
-    if (anyResult) calculate();
-  }
-
+  // ---- calculate ----
   function calculate() {
     const kwota = parseFloat(document.getElementById('kwota').value) || 0;
     const dni   = parseInt(document.getElementById('dni').value) || 0;
-
     if (dni <= 0) { alert('Podaj liczbę dni roboczych.'); return; }
 
-    const cards = document.querySelectorAll('.person-card');
+    const cards = [...document.querySelectorAll('.person-card')];
     if (!cards.length) { alert('Dodaj co najmniej jedną osobę.'); return; }
 
-    const absences = [...cards].map(c =>
-      Math.max(0, parseInt(c.querySelector('.abs-input').value) || 0)
-    );
-
+    const absences = cards.map(c => Math.max(0, parseInt(c.querySelector('.abs-input').value) || 0));
     const n = cards.length;
     const dailyPerPerson = kwota / (n * dni);
     const totalAbsences = absences.reduce((a, b) => a + b, 0);
 
+    const wyniki = [];
     cards.forEach((card, i) => {
       const own  = dailyPerPerson * (dni - absences[i]);
       const gain = n > 1 ? dailyPerPerson * (totalAbsences - absences[i]) / (n - 1) : 0;
       const bonus = Math.max(0, own + gain);
+      const imie = card.querySelector('.name-input').value || ('Osoba ' + (i + 1));
 
       const row = card.querySelector('.row-result');
       card.querySelector('.result-badge').textContent = fmt(bonus);
       row.style.display = 'flex';
+
+      wyniki.push({ imie, nieobecnosci: absences[i], premia: bonus });
     });
 
     document.getElementById('total-val').textContent = fmt(kwota);
-    document.getElementById('total-card').style.display = 'block';
+    document.getElementById('total-card').style.display = 'flex';
+    document.getElementById('btn-save').classList.add('visible');
+
+    lastResult = {
+      id: Date.now(),
+      data: document.getElementById('data-obliczenia').value,
+      kwota,
+      dni,
+      wyniki
+    };
   }
 
-  // Init
-  DEFAULT.forEach(n => addPerson(n));
+  // ---- save ----
+  function saveResult() {
+    if (!lastResult) return;
+    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+    db.unshift(lastResult);
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+    toast('Zapisano obliczenie ✓');
+    document.getElementById('btn-save').classList.remove('visible');
+    lastResult = null;
+  }
+
+  // ---- history ----
+  function renderHistory() {
+    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+    const container = document.getElementById('history-list');
+
+    if (!db.length) {
+      container.innerHTML = '<div class="history-empty">Brak zapisanych obliczeń.<br>Wróć do kalkulatora i kliknij <b>Zapisz</b>.</div>';
+      return;
+    }
+
+    container.innerHTML = db.map((entry, idx) => `
+      <div class="history-item" id="hi-${idx}">
+        <div class="history-header" onclick="toggleHistory(${idx})">
+          <div class="history-meta">
+            <span class="history-date">${fmtMonth(entry.data) || 'Bez daty'}</span>
+            <span class="history-sum">Pula: ${fmt(entry.kwota)}</span>
+          </div>
+          <span class="history-arrow">▶</span>
+        </div>
+        <div class="history-body">
+          <div class="history-info">
+            <span>Dni robocze: <b>${entry.dni}</b></span>
+            <span>Pracownicy: <b>${entry.wyniki.length}</b></span>
+          </div>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Imię</th>
+                <th>Nieob.</th>
+                <th>Premia</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${entry.wyniki.map(w => `
+                <tr>
+                  <td>${w.imie}</td>
+                  <td>${w.nieobecnosci}</td>
+                  <td>${fmt(w.premia)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+          <div class="history-actions">
+            <button class="btn-load" onclick="loadEntry(${idx})">Wczytaj do kalkulatora</button>
+            <button class="btn-delete" onclick="deleteEntry(${idx})">Usuń</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function toggleHistory(idx) {
+    document.getElementById('hi-' + idx).classList.toggle('open');
+  }
+
+  function loadEntry(idx) {
+    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+    const entry = db[idx];
+
+    document.getElementById('kwota').value = entry.kwota;
+    document.getElementById('dni').value = entry.dni;
+    document.getElementById('data-obliczenia').value = entry.data || '';
+    document.getElementById('people-list').innerHTML = '';
+    entry.wyniki.forEach(w => addPerson(w.imie, w.nieobecnosci));
+
+    // przejdź do kalkulatora
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('screen-calc').classList.add('active');
+    document.querySelector('.tab').classList.add('active');
+
+    document.getElementById('total-card').style.display = 'none';
+    document.getElementById('btn-save').classList.remove('visible');
+    lastResult = null;
+    toast('Wczytano obliczenie ✓');
+  }
+
+  function deleteEntry(idx) {
+    if (!confirm('Usunąć to obliczenie?')) return;
+    const db = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+    db.splice(idx, 1);
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+    renderHistory();
+    toast('Usunięto ✓');
+  }
+
+  // ---- init ----
+  (function init() {
+    // ustaw bieżący miesiąc
+    const now = new Date();
+    const ym = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+    document.getElementById('data-obliczenia').value = ym;
+
+    DEFAULT.forEach(n => addPerson(n));
+  })();
 </script>
 </body>
 </html>
