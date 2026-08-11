@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4CAF50">
+  <title>Kalkulator Premii</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0f0f0;
+      min-height: 100dvh;
+      padding: 16px;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.1);
+    }
+
+    label {
+      display: block;
+      font-size: .85rem;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input:focus { border-color: #4CAF50; }
+
+    .row-inputs { display: flex; gap: 8px; margin-bottom: 8px; }
+    .row-inputs input[type="text"] { flex: 2; }
+    .row-inputs input[type="number"] { flex: 1; min-width: 70px; }
+
+    .row-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-badge {
+      background: #e8f5e9;
+      color: #2e7d32;
+      font-weight: 700;
+      font-size: .95rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      min-width: 120px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .btn-remove {
+      background: #ffebee;
+      color: #c62828;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-title {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 12px;
+    }
+
+    .col-labels {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+      padding-right: 40px;
+    }
+    .col-labels span { font-size: .78rem; color: #888; }
+    .col-labels span:first-child { flex: 2; }
+    .col-labels span:last-child { flex: 1; }
+
+    #people-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .person-card {
+      background: #fafafa;
+      border: 1.5px solid #eee;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .btn-add {
+      width: 100%;
+      padding: 12px;
+      background: #fff;
+      border: 2px dashed #bbb;
+      border-radius: 10px;
+      font-size: .95rem;
+      color: #777;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-add:hover { border-color: #4CAF50; color: #4CAF50; }
+
+    .btn-calc {
+      width: 100%;
+      padding: 16px;
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .03em;
+      transition: background .2s;
+    }
+    .btn-calc:hover { background: #388e3c; }
+    .btn-calc:active { background: #2e7d32; }
+
+    .total-card {
+      background: #4CAF50;
+      color: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .total-card span:first-child { font-size: .95rem; opacity: .9; }
+    .total-card span:last-child { font-size: 1.4rem; font-weight: 700; }
+
+    @media (min-width: 500px) {
+      body { max-width: 480px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Kalkulator Premii</h1>
+
+<div class="card">
+  <label>Kwota premii (pula)</label>
+  <input type="number" id="kwota" value="0" min="0" step="0.01" placeholder="np. 5000">
+</div>
+
+<div class="card">
+  <label>Dni robocze w miesiącu</label>
+  <input type="number" id="dni" value="22" min="1" max="31" placeholder="np. 22">
+</div>
+
+<div class="card">
+  <div class="section-title">Pracownicy</div>
+  <div class="col-labels">
+    <span>Imię / Nazwisko</span>
+    <span>Nieobecności</span>
+  </div>
+  <div id="people-list"></div>
+  <button class="btn-add" onclick="addPerson()">+ Dodaj osobę</button>
+</div>
+
+<button class="btn-calc" onclick="calculate()">Oblicz</button>
+
+<div class="card" id="total-card" style="display:none; margin-top:14px;">
+  <div class="total-card">
+    <span>Łącznie wypłacono</span>
+    <span id="total-val">0,00 zł</span>
+  </div>
+</div>
+
+<script>
+  const DEFAULT = [
+    "Izabela","Monika U.","Julia","Joanna",
+    "Paulina","Monika Ż.","Monika K.","Wiktoria"
+  ];
+
+  function fmt(n) {
+    return n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
+  }
+
+  function addPerson(name = '', resultText = '') {
+    const list = document.getElementById('people-list');
+    const id = Date.now() + Math.random();
+
+    const div = document.createElement('div');
+    div.className = 'person-card';
+    div.dataset.id = id;
+    div.innerHTML = `
+      <div class="row-inputs">
+        <input type="text" placeholder="Imię" value="${name}" class="name-input">
+        <input type="number" placeholder="0" value="0" min="0" class="abs-input">
+        <button class="btn-remove" onclick="removePerson(this)" title="Usuń">✕</button>
+      </div>
+      <div class="row-result" style="display:${resultText ? 'flex' : 'none'}">
+        <span style="font-size:.85rem;color:#555;">Premia:</span>
+        <span class="result-badge">${resultText}</span>
+      </div>`;
+    list.appendChild(div);
+  }
+
+  function removePerson(btn) {
+    btn.closest('.person-card').remove();
+    recalcIfDone();
+  }
+
+  function recalcIfDone() {
+    const anyResult = document.querySelector('.result-badge');
+    if (anyResult) calculate();
+  }
+
+  function calculate() {
+    const kwota = parseFloat(document.getElementById('kwota').value) || 0;
+    const dni   = parseInt(document.getElementById('dni').value) || 0;
+
+    if (dni <= 0) { alert('Podaj liczbę dni roboczych.'); return; }
+
+    const cards = document.querySelectorAll('.person-card');
+    if (!cards.length) { alert('Dodaj co najmniej jedną osobę.'); return; }
+
+    const absences = [...cards].map(c =>
+      Math.max(0, parseInt(c.querySelector('.abs-input').value) || 0)
+    );
+
+    const n = cards.length;
+    const dailyPerPerson = kwota / (n * dni);
+    const totalAbsences = absences.reduce((a, b) => a + b, 0);
+
+    cards.forEach((card, i) => {
+      const own  = dailyPerPerson * (dni - absences[i]);
+      const gain = n > 1 ? dailyPerPerson * (totalAbsences - absences[i]) / (n - 1) : 0;
+      const bonus = Math.max(0, own + gain);
+
+      const row = card.querySelector('.row-result');
+      card.querySelector('.result-badge').textContent = fmt(bonus);
+      row.style.display = 'flex';
+    });
+
+    document.getElementById('total-val').textContent = fmt(kwota);
+    document.getElementById('total-card').style.display = 'block';
+  }
+
+  // Init
+  DEFAULT.forEach(n => addPerson(n));
+</script>
+</body>
+</html>
