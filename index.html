@@ -51,8 +51,8 @@
     label { display: block; font-size: .85rem; color: #555; margin-bottom: 4px; }
 
     input[type="number"], input[type="text"], input[type="month"] {
-      width: 100%; padding: 10px 12px; border: 1.5px solid #ddd;
-      border-radius: 8px; font-size: 1rem; outline: none;
+      width: 100%; padding: .55em .75em; border: 1.5px solid #ddd;
+      border-radius: .5em; font-size: 1rem; outline: none;
       transition: border-color .2s; background: #fff;
     }
     input:focus { border-color: #4CAF50; }
@@ -66,30 +66,30 @@
 
     .person-card {
       background: #fafafa; border: 1.5px solid #eee;
-      border-radius: 10px; padding: 10px 12px;
+      border-radius: .65em; padding: .65em .75em;
     }
-    .row-inputs { display: flex; gap: 8px; }
+    .row-inputs { display: flex; gap: .5em; }
     .row-inputs input[type="text"] { flex: 2; }
-    .row-inputs input[type="number"] { flex: 1; min-width: 70px; }
+    .row-inputs input[type="number"] { flex: 1; min-width: 4em; }
 
     .row-result {
       display: flex; justify-content: space-between;
-      align-items: center; gap: 8px; margin-top: 8px;
+      align-items: center; gap: .5em; margin-top: .5em;
     }
     .result-badge {
       background: #e8f5e9; color: #2e7d32; font-weight: 700;
-      font-size: .95rem; padding: 6px 14px; border-radius: 20px;
-      min-width: 120px; text-align: right; white-space: nowrap;
+      font-size: .95rem; padding: .35em .85em; border-radius: 2em;
+      min-width: 7em; text-align: right; white-space: nowrap;
     }
     .btn-remove {
       background: #ffebee; color: #c62828; border: none; border-radius: 50%;
-      width: 32px; height: 32px; font-size: 1rem; cursor: pointer;
+      width: 2em; height: 2em; font-size: 1rem; cursor: pointer;
       flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     }
     .btn-add {
-      width: 100%; padding: 12px; background: #fff; border: 2px dashed #bbb;
-      border-radius: 10px; font-size: .95rem; color: #777; cursor: pointer;
-      margin-top: 8px; transition: border-color .2s, color .2s;
+      width: 100%; padding: .75em; background: #fff; border: 2px dashed #bbb;
+      border-radius: .65em; font-size: .95rem; color: #777; cursor: pointer;
+      margin-top: .5em; transition: border-color .2s, color .2s;
     }
     .btn-add:hover { border-color: #4CAF50; color: #4CAF50; }
 
@@ -127,6 +127,19 @@
       z-index: 999; white-space: nowrap;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* font size slider */
+    .size-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border-radius: 12px; padding: 10px 14px;
+      margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.1);
+    }
+    .size-bar span { font-size: .78rem; color: #888; white-space: nowrap; }
+    .size-bar input[type="range"] {
+      flex: 1; height: 4px; accent-color: #4CAF50;
+      cursor: pointer; border: none; background: none; padding: 0;
+    }
+    .size-label { font-size: .78rem; color: #4CAF50; font-weight: 700; min-width: 2.5em; text-align: right; }
 
     /* header */
     .app-header {
@@ -201,6 +214,14 @@
 <div class="app-header">
   <a class="btn-back" href="https://andrzejdlu-ops.github.io/">← Menu</a>
   <span class="app-title">Kalkulator Premii</span>
+</div>
+
+<div class="size-bar">
+  <span>A</span>
+  <input type="range" id="font-slider" min="12" max="22" step="1" value="16"
+         oninput="setFontSize(this.value)">
+  <span style="font-size:1.1rem">A</span>
+  <span class="size-label" id="font-label">16px</span>
 </div>
 
 <div class="tabs">
@@ -461,12 +482,25 @@
     }
   }
 
+  // ---- font size ----
+  function setFontSize(px) {
+    px = parseInt(px);
+    document.documentElement.style.fontSize = px + 'px';
+    document.getElementById('font-label').textContent = px + 'px';
+    document.getElementById('font-slider').value = px;
+    localStorage.setItem('skyapp_fs', px);
+  }
+
   // ---- init ----
   (function init() {
     const now = new Date();
     const ym = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
     document.getElementById('data-obliczenia').value = ym;
     DEFAULT.forEach(n => addPerson(n));
+
+    // restore saved font size
+    const saved = localStorage.getItem('skyapp_fs');
+    if (saved) setFontSize(saved);
   })();
 </script>
 </body>
