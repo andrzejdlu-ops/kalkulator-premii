@@ -6,6 +6,12 @@
   <meta name="theme-color" content="#4CAF50">
   <title>Kalkulator Premii</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    // Guard: redirect to main panel if not authenticated
+    if (sessionStorage.getItem('skyapp_auth') !== '1') {
+      window.location.replace('https://andrzejdlu-ops.github.io/');
+    }
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
