@@ -128,6 +128,22 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* header */
+    .app-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .btn-back {
+      display: flex; align-items: center; gap: 6px;
+      background: #fff; border: 1.5px solid #ddd; border-radius: 10px;
+      padding: 8px 14px; font-size: .88rem; font-weight: 600;
+      color: #555; cursor: pointer; text-decoration: none;
+      transition: border-color .2s, color .2s;
+      white-space: nowrap;
+    }
+    .btn-back:hover { border-color: #4CAF50; color: #2e7d32; }
+    .app-title { font-size: 1.1rem; font-weight: 700; color: #1a1a1a; }
+
     /* historia */
     .history-empty { text-align: center; color: #aaa; padding: 40px 0; font-size: .95rem; }
     .history-loading { text-align: center; color: #aaa; padding: 40px 0; font-size: .95rem; }
@@ -181,6 +197,11 @@
   </style>
 </head>
 <body>
+
+<div class="app-header">
+  <a class="btn-back" href="https://andrzejdlu-ops.github.io/">← Menu</a>
+  <span class="app-title">Kalkulator Premii</span>
+</div>
 
 <div class="tabs">
   <button class="tab active" id="tab-calc" onclick="showScreen('calc')">Kalkulator</button>
