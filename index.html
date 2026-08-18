@@ -438,11 +438,14 @@
   // ---- kopiowanie do Excela (TSV — Excel sam rozdzieli taby na kolumny) ----
   function updateExcelText(wyniki) {
     const clean = s => String(s).replace(/[\t\r\n]/g, ' ').trim();
-    const header = ['Imię', 'Premia'].join('\t');
-    const rows = wyniki.map(w => [
-      clean(w.imie),
-      w.premia.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    ].join('\t'));
+    const names = wyniki.map(w => clean(w.imie));
+    // dopelnienie spacjami do stalej szerokosci — sam tabulator nie wyrownuje
+    // wizualnie kolumn o roznej dlugosci tekstu; nadal jeden tab na wiersz,
+    // wiec w Excelu i tak wpada do dwoch kolumn
+    const width = Math.max('Imię'.length, ...names.map(n => n.length)) + 3;
+    const header = 'Imię'.padEnd(width) + '\t' + 'Premia';
+    const rows = wyniki.map((w, i) => names[i].padEnd(width) + '\t' +
+      w.premia.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     document.getElementById('excel-text').value = [header, ...rows].join('\n');
     document.getElementById('excel-card').style.display = 'block';
   }
