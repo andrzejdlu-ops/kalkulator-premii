@@ -297,6 +297,7 @@
 
 <!-- Firebase SDK (compat) -->
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 
 <script>
@@ -310,8 +311,26 @@
     appId: "1:566707019483:web:c04eb219eda3011ab9b6fe"
   };
   firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
   const db = firebase.firestore();
   const COL = 'obliczenia';
+
+  // Firestore rules require request.auth != null — sign in anonymously before any read/write.
+  const authReady = auth.signInAnonymously().catch(e => {
+    console.error('Auth error:', e);
+    toast('Błąd autoryzacji: ' + e.message);
+  });
+
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  // Safe for embedding inside a single-quoted JS string literal that itself sits inside
+  // an HTML attribute (e.g. onclick="fn('${escJsAttr(x)}')") — escapes JS quote/backslash
+  // first, then HTML-escapes the result for the attribute context.
+  function escJsAttr(s) {
+    const jsEscaped = String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    return esc(jsEscaped);
+  }
 
   const DEFAULT = [
     "Izabela","Monika U.","Julia","Joanna",
@@ -322,10 +341,11 @@
 
   // ---- helpers ----
   function fmt(n) {
+    n = Number(n) || 0;
     return n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
   }
   function fmtMonth(ym) {
-    if (!ym) return '—';
+    if (!ym || typeof ym !== 'string' || !/^\d{4}-(0[1-9]|1[0-2])$/.test(ym)) return '—';
     const [y, m] = ym.split('-');
     const names = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
                    'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
@@ -351,9 +371,9 @@
     const div = document.createElement('div');
     div.className = 'person-row';
     div.innerHTML = `
-      <input type="text" placeholder="Imię" value="${name}" class="name-input">
-      <input type="number" placeholder="0" value="${absVal}" min="0" class="abs-input">
-      <span class="result-badge">${resultText}</span>
+      <input type="text" placeholder="Imię" value="${esc(name)}" class="name-input" maxlength="60">
+      <input type="number" placeholder="0" value="${Math.max(0, parseInt(absVal) || 0)}" min="0" class="abs-input">
+      <span class="result-badge">${esc(resultText)}</span>
       <button class="btn-remove" onclick="removePerson(this)">✕</button>`;
     list.appendChild(div);
   }
@@ -408,6 +428,7 @@
     btn.disabled = true;
     btn.textContent = 'Zapisywanie...';
     try {
+      await authReady;
       // ID dokumentu = miesiąc (np. "2026-08") — nadpisuje jeśli istnieje
       await db.collection(COL).doc(lastResult.data).set(lastResult);
       toast('Zapisano w chmurze ✓');
@@ -426,6 +447,7 @@
     const container = document.getElementById('history-list');
     container.innerHTML = '<div class="history-loading">Ładowanie z chmury...</div>';
     try {
+      await authReady;
       const snap = await db.collection(COL).orderBy('data', 'desc').get();
       if (snap.empty) {
         container.innerHTML = '<div class="history-empty">Brak zapisanych obliczeń.<br>Wróć do kalkulatora i kliknij <b>Zapisz</b>.</div>';
@@ -436,30 +458,30 @@
         <div class="history-item" id="hi-${idx}">
           <div class="history-header" onclick="toggleHistory(${idx})">
             <div class="history-meta">
-              <span class="history-date">${fmtMonth(entry.data) || 'Bez daty'}</span>
-              <span class="history-sum">Pula: ${fmt(entry.kwota)}</span>
+              <span class="history-date">${esc(fmtMonth(entry.data) || 'Bez daty')}</span>
+              <span class="history-sum">Pula: ${esc(fmt(entry.kwota))}</span>
             </div>
             <span class="history-arrow">▶</span>
           </div>
           <div class="history-body">
             <div class="history-info">
-              <span>Dni robocze: <b>${entry.dni}</b></span>
-              <span>Pracownicy: <b>${entry.wyniki.length}</b></span>
+              <span>Dni robocze: <b>${esc(entry.dni)}</b></span>
+              <span>Pracownicy: <b>${esc(entry.wyniki.length)}</b></span>
             </div>
             <table class="history-table">
               <thead><tr><th>Imię</th><th>Nieob.</th><th>Premia</th></tr></thead>
               <tbody>
                 ${entry.wyniki.map(w => `
                   <tr>
-                    <td>${w.imie}</td>
-                    <td>${w.nieobecnosci}</td>
-                    <td>${fmt(w.premia)}</td>
+                    <td>${esc(w.imie)}</td>
+                    <td>${esc(w.nieobecnosci)}</td>
+                    <td>${esc(fmt(w.premia))}</td>
                   </tr>`).join('')}
               </tbody>
             </table>
             <div class="history-actions">
               <button class="btn-load" onclick="loadEntry(${idx})">Wczytaj do kalkulatora</button>
-              <button class="btn-delete" onclick="deleteEntry('${entry.id}', ${idx})">Usuń</button>
+              <button class="btn-delete" onclick="deleteEntry('${escJsAttr(entry.id)}', ${idx})">Usuń</button>
             </div>
           </div>
         </div>`).join('');
@@ -467,7 +489,7 @@
       // store entries for loadEntry
       window._historyEntries = entries;
     } catch (e) {
-      container.innerHTML = `<div class="history-empty">Błąd ładowania: ${e.message}</div>`;
+      container.innerHTML = `<div class="history-empty">Błąd ładowania: ${esc(e.message)}</div>`;
     }
   }
 
@@ -492,6 +514,7 @@
   async function deleteEntry(firestoreId, idx) {
     if (!confirm('Usunąć to obliczenie?')) return;
     try {
+      await authReady;
       await db.collection(COL).doc(firestoreId).delete();
       toast('Usunięto ✓');
       renderHistory();
