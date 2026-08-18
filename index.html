@@ -57,6 +57,14 @@
     }
     input:focus { border-color: #4CAF50; }
 
+    textarea {
+      width: 100%; padding: .6em .75em; border: 1.5px solid #ddd;
+      border-radius: .5em; font-size: .85rem; outline: none;
+      font-family: 'Consolas', monospace; resize: vertical;
+      background: #fafafa; color: #333; margin-bottom: 8px;
+    }
+    textarea:focus { border-color: #4CAF50; }
+
     .col-labels { display: flex; gap: .4em; margin-bottom: 4px; padding-right: 2.4em; }
     .col-labels span { font-size: .78rem; color: #888; }
     .col-labels span:first-child { flex: 2; min-width: 0; }
@@ -284,6 +292,11 @@
         <button class="btn-calc" onclick="calculate()">Oblicz</button>
         <button class="btn-save" id="btn-save" onclick="saveResult()" style="display:none;">Zapisz</button>
       </div>
+      <div class="card" id="excel-card" style="display:none;">
+        <div class="section-title">Do wklejenia w Excelu</div>
+        <textarea id="excel-text" readonly rows="6"></textarea>
+        <button class="btn-add" onclick="copyExcelText()">📋 Kopiuj do schowka</button>
+      </div>
     </div>
   </div>
 </div>
@@ -411,6 +424,8 @@
     document.getElementById('total-card').style.display = 'flex';
     document.getElementById('btn-save').style.display = 'block';
 
+    updateExcelText(wyniki);
+
     lastResult = {
       data: document.getElementById('data-obliczenia').value,
       kwota,
@@ -418,6 +433,37 @@
       wyniki,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
+  }
+
+  // ---- kopiowanie do Excela (TSV — Excel sam rozdzieli taby na kolumny) ----
+  function updateExcelText(wyniki) {
+    const clean = s => String(s).replace(/[\t\r\n]/g, ' ').trim();
+    const header = ['Imię', 'Nieobecności (dni)', 'Premia'].join('\t');
+    const rows = wyniki.map(w => [
+      clean(w.imie),
+      w.nieobecnosci,
+      w.premia.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    ].join('\t'));
+    document.getElementById('excel-text').value = [header, ...rows].join('\n');
+    document.getElementById('excel-card').style.display = 'block';
+  }
+
+  async function copyExcelText() {
+    const ta = document.getElementById('excel-text');
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    try {
+      await navigator.clipboard.writeText(ta.value);
+      toast('Skopiowano ✓ — wklej w Excelu (Ctrl+V)');
+    } catch (e) {
+      try {
+        document.execCommand('copy');
+        toast('Skopiowano ✓ — wklej w Excelu (Ctrl+V)');
+      } catch (e2) {
+        toast('Nie udało się skopiować — zaznacz tekst ręcznie i Ctrl+C');
+      }
+    }
   }
 
   // ---- save to Firestore ----
@@ -506,6 +552,7 @@
     entry.wyniki.forEach(w => addPerson(w.imie, w.nieobecnosci));
     document.getElementById('total-card').style.display = 'none';
     document.getElementById('btn-save').style.display = 'none';
+    document.getElementById('excel-card').style.display = 'none';
     lastResult = null;
     showScreen('calc');
     toast('Wczytano obliczenie ✓');
